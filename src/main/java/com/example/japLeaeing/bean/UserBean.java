@@ -1,9 +1,6 @@
 package com.example.japLeaeing.bean;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +8,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "t_user")
 public class UserBean implements Serializable {
@@ -19,7 +18,6 @@ public class UserBean implements Serializable {
 
     @Id
     @Column(name = "t_id")
-    @GeneratedValue
     private Long id;
     @Column(name = "t_name")
     private String name;

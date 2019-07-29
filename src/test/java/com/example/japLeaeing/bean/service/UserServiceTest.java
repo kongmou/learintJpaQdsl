@@ -22,4 +22,12 @@ public class UserServiceTest {
         System.out.println(userBeans);
     }
 
+    @Test
+    public  void tesUpdateWithJpa(){
+
+        UserBean userBean = new UserBean(1L, "updateTest", 22, "Upfate", "ped");
+        String resultStr = userService.updateWithJpa(userBean);
+        System.out.println(userService.queryAll());
+    }
+
 }
