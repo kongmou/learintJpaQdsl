@@ -6,6 +6,7 @@ import com.example.japLeaeing.bean.QGoodTypeBean;
 import com.example.japLeaeing.dto.GoodDTO;
 import com.querydsl.codegen.ProjectionSerializer;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
 
@@ -110,6 +111,27 @@ public class GoodService {
                 })
                 .collect(Collectors.toList());
 
+    }
+
+    /**
+     * 模糊子查询
+     */
+    public  void childLikeSelect(){
+        QGoodInfoBean qGoodInfoBean = QGoodInfoBean.goodInfoBean;
+        QGoodTypeBean qGoodTypeBean = QGoodTypeBean.goodTypeBean;
+
+        List<GoodInfoBean> goodInfoBeans = queryFactory.select(qGoodInfoBean)
+                .from(qGoodInfoBean)
+                .where(qGoodInfoBean.typeId.in(
+                        JPAExpressions.select(qGoodTypeBean.id)
+                                .from(qGoodTypeBean)
+                                .where(qGoodTypeBean.name.like("蔬菜%"))
+
+                ))
+                .offset(1)
+                .limit(1)
+                .fetch();
+        System.out.println(goodInfoBeans);
     }
 
 }

@@ -27,10 +27,17 @@ public class GoodServiceTest {
 
         System.out.println(goodService.selectWithQueryDSL());
     }
- @Test
+
+    @Test
     public void TestSelectWithStream() {
 
         System.out.println(goodService.selectWithStream());
+    }
+
+    @Test
+    public void TestChildLikeSelect() {
+
+        goodService.childLikeSelect();
     }
 
 
