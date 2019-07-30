@@ -25,9 +25,27 @@ public class UserServiceTest {
     @Test
     public  void tesUpdateWithJpa(){
 
-        UserBean userBean = new UserBean(1L, "updateTest", 22, "Upfate", "ped");
-        String resultStr = userService.updateWithJpa(userBean);
+        //UserBean userBean = new UserBean(2L, "updateTest2", 22, "Upfat2e", "ped2");
+        UserBean userBean = new UserBean(5L, "updateTest5", 55, "Upfate5", "ped5");
+        userService.updateWithJpa(userBean);
         System.out.println(userService.queryAll());
     }
+
+    @Test
+    public void testUpdateWithQdsl(){
+        UserBean userBean = new UserBean(5L, "updateTest5", 55, "Upfate5", "ped5");
+        userService.updateWithQdsl(userBean);
+        //System.out.println(userService.queryAll());
+    }
+
+    @Test
+    public void testDeleteWithQdsl(){
+        UserBean userBean = new UserBean(5L, "updateTest5", 55, "Upfate5", "ped5");
+       userService.deleteWithQdsl(userBean);
+        //System.out.println(userService.queryAll());
+    }
+
+
+
 
 }
