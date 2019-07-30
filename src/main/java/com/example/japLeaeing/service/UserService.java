@@ -1,12 +1,10 @@
-package com.example.japLeaeing.bean.service;
+package com.example.japLeaeing.service;
 
 import com.example.japLeaeing.bean.QUserBean;
 import com.example.japLeaeing.bean.UserBean;
 import com.example.japLeaeing.jpa.UserJPA;
-import com.google.common.annotations.VisibleForTesting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;

@@ -1,4 +1,4 @@
-package com.example.japLeaeing.bean.service;
+package com.example.japLeaeing.service;
 
 import com.example.japLeaeing.bean.UserBean;
 import org.junit.Test;
