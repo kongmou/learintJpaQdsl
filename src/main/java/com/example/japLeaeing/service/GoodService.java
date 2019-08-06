@@ -5,7 +5,11 @@ import com.example.japLeaeing.bean.QGoodInfoBean;
 import com.example.japLeaeing.bean.QGoodTypeBean;
 import com.example.japLeaeing.dto.GoodDTO;
 import com.querydsl.codegen.ProjectionSerializer;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
@@ -89,27 +93,15 @@ public class GoodService {
                 .from(_Q_good, _Q_good_type)//构建两表笛卡尔集
                 .where(_Q_good.typeId.eq(_Q_good_type.id))//关联两表
                 .orderBy(_Q_good.order.desc())//倒序
-                .fetch()
-                .stream()
-                .map(tuple -> {
-                    //创建商品dto
-                    GoodDTO dto = new GoodDTO();
-                    //设置商品编号
-                    dto.setId(tuple.get(_Q_good.id));
-                    //设置商品价格
-                    dto.setPrice(tuple.get(_Q_good.price));
-                    //设置商品标题
-                    dto.setTitle(tuple.get(_Q_good.title));
-                    //设置单位
-                    dto.setUnit(tuple.get(_Q_good.unit));
-                    //设置类型编号
-                    dto.setTypeId(tuple.get(_Q_good_type.id));
-                    //设置类型名称
-                    dto.setTypeName(tuple.get(_Q_good_type.name));
-                    //返回本次构建的dto
-                    return dto;
-                })
-                .collect(Collectors.toList());
+                .fetch().stream().map(tuple ->
+                        GoodDTO.builder()
+                                .id(tuple.get(_Q_good.id))
+                                .price(tuple.get(_Q_good.price))
+                                .title(tuple.get(_Q_good.title))
+                                .unit(tuple.get(_Q_good.unit))
+                                .typeName(tuple.get(_Q_good_type.name))
+                                .typeId(tuple.get(_Q_good_type.id)).build()
+                ).collect(Collectors.toList());
 
     }
 
@@ -132,6 +124,34 @@ public class GoodService {
                 .limit(1)
                 .fetch();
         System.out.println(goodInfoBeans);
+    }
+
+    public List<GoodDTO> findGoodsCondition(GoodInfoBean goodInfoBean){
+        QGoodTypeBean qGoodTypeBean = QGoodTypeBean.goodTypeBean;
+        QGoodInfoBean qGoodInfoBean = QGoodInfoBean.goodInfoBean;
+
+        Predicate predicate = qGoodInfoBean.id.isNotNull().or(qGoodInfoBean.id.isNull());
+        predicate = goodInfoBean.getTitle() == null ? predicate : ExpressionUtils.and(predicate, qGoodInfoBean.title.eq(goodInfoBean.getTitle()));
+
+        return queryFactory.select(
+                qGoodInfoBean.id,
+                qGoodInfoBean.price,
+                qGoodInfoBean.title,
+                qGoodInfoBean.unit,
+                qGoodTypeBean.name,
+                qGoodTypeBean.id
+        ).from(qGoodInfoBean, qGoodTypeBean)
+         .where(qGoodInfoBean.typeId.eq(qGoodTypeBean.id).and(predicate))
+         .fetch().stream().map(tuple ->
+                GoodDTO.builder()
+                .id(tuple.get(qGoodInfoBean.id))
+                .price(tuple.get(qGoodInfoBean.price))
+                .title(tuple.get(qGoodInfoBean.title))
+                .unit(tuple.get(qGoodInfoBean.unit))
+                .typeName(tuple.get(qGoodTypeBean.name))
+                .typeId(tuple.get(qGoodTypeBean.id)).build()
+        ).collect(Collectors.toList());
+
     }
 
 }

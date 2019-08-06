@@ -1,6 +1,8 @@
 package com.example.japLeaeing.dto;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -12,6 +14,8 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 @Data
+@Builder
+@EqualsAndHashCode(of = "id")
 public class GoodDTO implements Serializable {
 
     private static final long serialVersionUID = 7149750034470495179L;
