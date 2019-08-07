@@ -102,3 +102,5 @@ BC明确地限定了模型的应用范围，以便让团队成员对什么应该
 
 
 
+![构造块](https://raw.githubusercontent.com/kongmou/learintJpaQdsl/master/%E6%9E%84%E9%80%A0%E5%9D%97.png)
+
